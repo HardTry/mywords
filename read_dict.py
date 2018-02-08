@@ -1,8 +1,10 @@
 # coding=utf-8
 
-import sys, io
+import sys, io, os
 import codecs
 import random
+from colorama import Fore, Back, Style, init
+
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # print('中文')
@@ -12,19 +14,8 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # iconv -f utf-161e -t utf-8 < p.txt > u.txt
 WORDs_FILE = './u.txt'
 
-mydict = {}
+my_dict = {}
 all_words = []
-
-
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
 
 
 class Word:
@@ -49,8 +40,6 @@ def get_dict(filepath):
     # outpath = 'E:\\planet\\english\\word-only.txt'
 
     word = Word()
-    mydict = {}
-    all_words = []
     alpha = ''
     with codecs.open(filepath, 'r', encoding='utf-8') as fp:
         for line in fp:
@@ -65,20 +54,19 @@ def get_dict(filepath):
             elif line.startswith('@'):
                 word.time = int(line[1: len(line) - 2])
             elif line.startswith('$1'):
-                mydict[alpha] = word
-
-    return mydict, all_words
+                my_dict[alpha] = word
 
 
 def get_int_input(msg):
-    myinput = input(msg)
-    if myinput == 'q' or myinput == 'Q': exit(0)
-    return int(myinput)
+    my_input = input(msg)
+    if my_input == 'q' or my_input == 'Q':
+        exit(0)
+    return int(my_input)
 
 
 def print_words(words):
     for w in words:
-        mydict[w].output()
+        my_dict[w].output()
 
 
 def select_task():
@@ -87,46 +75,49 @@ def select_task():
 
 
 def practice():
-    print(chr(27) + "[2J")
+    os.system('cls' if os.name == 'nt' else 'clear')
 
     words = list(range(0, len(all_words)))
     random.shuffle(words)
-    ALL_TIMES = 5
+    all_times = 5
     for w in words:
-        mydict[all_words[w]].output()
+        my_dict[all_words[w]].output()
         times = 0
-        while times < ALL_TIMES:
+        while times < all_times:
             my_word = input('Enter the word: ')
-            if my_word == mydict[all_words[w]].word:
+            if my_word == my_dict[all_words[w]].word:
                 times += 1
             elif my_word == 'q':
                 exit(1)
 
 
 def exam():
-    print(chr(27) + "[2J")
+    os.system('cls' if os.name == 'nt' else 'clear')
 
     words = list(range(0, len(all_words)))
     random.shuffle(words)
     score = 0
     for w in words:
-        mydict[all_words[w]].output_interpretation()
+        my_dict[all_words[w]].output_interpretation()
         my_word = input('Enter the word: ')
-        if my_word == mydict[all_words[w]].word:
-            print(bcolors.OKGREEN + 'Good!' + bcolors.ENDC)
+        if my_word == my_dict[all_words[w]].word:
+            print(Fore.GREEN + 'Good!!!')
+            print(Style.RESET_ALL)
             score += 1
         elif my_word == 'q':
             exit(2)
         else:
-            print(bcolors.FAIL + 'Wrong!' + bcolors.ENDC,\
-                  'The correct answer is',\
-                  bcolors.OKBLUE + mydict[all_words[w]].word + bcolors.ENDC)
+            print(Fore.RED + 'Wrong!', Fore.RESET + 'The correct answer is', Fore.BLUE + my_dict[all_words[w]].word)
+            print(Style.RESET_ALL)
 
-    print('You have got ', bcolors.FAIL + str(float(score / len(all_words) * 100)) + bcolors.ENDC)
+    print('You have got ', Fore.RED + str(float(score / len(all_words) * 100)))
+    print(Style.RESET_ALL)
 
 
 if __name__ == '__main__':
-    mydict, all_words = get_dict(WORDs_FILE)
+    init()
+
+    get_dict(WORDs_FILE)
     # for w in all_words:
     #     mydict[w].output()
 
@@ -143,4 +134,5 @@ if __name__ == '__main__':
         elif task == 2:
             exam()
 
-    print('\n', bcolors.OKBLUE + 'Goodbye! See you next time!' + bcolors.ENDC + '\n')
+    print('\n', Fore.BLUE + 'Goodbye! See you next time!', '\n')
+    print(Style.RESET_ALL)
