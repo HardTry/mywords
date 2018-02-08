@@ -26,7 +26,7 @@ class Word:
         self.time = 0
 
     def output(self):
-        print(self.word, self.pronon)
+        print('\n', Fore.GREEN + self.word, Fore.RESET + self.pronon)
         for itp in self.interp:
             print(itp)
 
