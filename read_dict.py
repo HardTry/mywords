@@ -2,6 +2,7 @@
 
 import sys, io
 import codecs
+import random
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # print('中文')
@@ -18,6 +19,15 @@ class Word:
         self.pronon = ''
         self.interp = []  # interpretations
         self.time = 0
+
+    def output(self):
+        print(self.word, self.pronon)
+        for itp in self.interp:
+            print(itp)
+
+    def output_interpretation(self):
+        for itp in self.interp:
+            print(itp)
 
 
 def get_dict(filepath):
@@ -46,6 +56,68 @@ def get_dict(filepath):
     return mydict, all_words
 
 
-mydict, all_words = get_dict(WORDs_FILE)
-print(mydict[all_words[0]])
-print(mydict[all_words[-1]])
+def get_int_input(msg):
+    myinput = input(msg)
+    if myinput == 'q' or myinput == 'Q': exit(0)
+    return int(myinput)
+
+
+def print_words(words):
+    for w in words:
+        mydict[w].output()
+
+
+def select_task():
+    print('\nPlease Select Your Task:\n\t1. Practice\n\t2. Examination\n\t3. Quit')
+    return get_int_input('Enter your task(1, 2 or 3): ')
+
+
+def practice():
+    words = list(range(0, len(all_words)))
+    random.shuffle(words)
+    ALL_TIMES = 5
+    for w in words:
+        mydict[all_words[w]].output()
+        times = 0
+        while times < ALL_TIMES:
+            my_word = input('Enter the word: ')
+            if my_word == mydict[all_words[w]].word:
+                times += 1
+
+
+
+def exam():
+    words = list(range(0, len(all_words)))
+    random.shuffle(words)
+    score = 0
+    for w in words:
+        mydict[all_words[w]].output_interpretation()
+        my_word = input('Enter the word: ')
+        if my_word == mydict[all_words[w]].word:
+            print('Good!')
+            score += 1
+        else:
+            print('Wrong!')
+
+    print('You have got ', float(score / len(all_words) * 100))
+
+
+if __name__ == '__main__':
+    mydict, all_words = get_dict(WORDs_FILE)
+    # for w in all_words:
+    #     mydict[w].output()
+
+    print('Please Select A Range of Words. We have', len(all_words), 'words.')
+    start_index = get_int_input('Enter the start index of word(q for quit): ') - 1
+    end_index = get_int_input('Enter the end index of word (q for quit): ')
+    all_words = all_words[start_index: end_index]
+
+    task = 0
+    while task != 3:
+        task = select_task()
+        if task == 1:
+            practice()
+        elif task == 2:
+            exam()
+
+    print('\nGoodbye! See you next time!\n')
