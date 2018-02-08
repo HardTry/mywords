@@ -12,6 +12,20 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # iconv -f utf-161e -t utf-8 < p.txt > u.txt
 WORDs_FILE = './u.txt'
 
+mydict = {}
+all_words = []
+
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 
 class Word:
     def __init__(self, word=''):
@@ -73,6 +87,8 @@ def select_task():
 
 
 def practice():
+    print(chr(27) + "[2J")
+
     words = list(range(0, len(all_words)))
     random.shuffle(words)
     ALL_TIMES = 5
@@ -83,10 +99,13 @@ def practice():
             my_word = input('Enter the word: ')
             if my_word == mydict[all_words[w]].word:
                 times += 1
-
+            elif my_word == 'q':
+                exit(1)
 
 
 def exam():
+    print(chr(27) + "[2J")
+
     words = list(range(0, len(all_words)))
     random.shuffle(words)
     score = 0
@@ -94,12 +113,16 @@ def exam():
         mydict[all_words[w]].output_interpretation()
         my_word = input('Enter the word: ')
         if my_word == mydict[all_words[w]].word:
-            print('Good!')
+            print(bcolors.OKGREEN + 'Good!' + bcolors.ENDC)
             score += 1
+        elif my_word == 'q':
+            exit(2)
         else:
-            print('Wrong!')
+            print(bcolors.FAIL + 'Wrong!' + bcolors.ENDC,\
+                  'The correct answer is',\
+                  bcolors.OKBLUE + mydict[all_words[w]].word + bcolors.ENDC)
 
-    print('You have got ', float(score / len(all_words) * 100))
+    print('You have got ', bcolors.FAIL + str(float(score / len(all_words) * 100)) + bcolors.ENDC)
 
 
 if __name__ == '__main__':
@@ -120,4 +143,4 @@ if __name__ == '__main__':
         elif task == 2:
             exam()
 
-    print('\nGoodbye! See you next time!\n')
+    print('\n', bcolors.OKBLUE + 'Goodbye! See you next time!' + bcolors.ENDC + '\n')
