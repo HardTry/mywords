@@ -16,7 +16,7 @@ WORDs_FILE = './u.txt'
 
 my_dict = {}
 all_words = []
-
+unknown = []
 
 class Word:
     def __init__(self, word=''):
@@ -107,7 +107,7 @@ def exam():
         elif my_word == 'q':
             exit(2)
         else:
-            print(Fore.RED + 'Wrong!', Fore.RESET + 'The correct answer is', Fore.BLUE + my_dict[all_words[w]].word)
+            print(Fore.RED + 'Wrong!', Fore.RESET + 'The correct answer is', Fore.CYAN + my_dict[all_words[w]].word)
             print(Style.RESET_ALL)
 
     print('You have got ', Fore.RED + str(float(score / len(all_words) * 100)))
@@ -134,5 +134,5 @@ if __name__ == '__main__':
         elif task == 2:
             exam()
 
-    print('\n', Fore.BLUE + 'Goodbye! See you next time!', '\n')
+    print('\n', Fore.CYAN + 'Goodbye! See you next time!', '\n')
     print(Style.RESET_ALL)
