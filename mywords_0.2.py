@@ -117,7 +117,7 @@ def exam(word_list):
             unknown.append(my_dict[word_list[w]].word)
             print(Style.RESET_ALL)
 
-    print('You have got ', Fore.RED + str(float(score / len(all_words) * 100)))
+    print('You have got ', Fore.RED + str(float(score / len(word_list) * 100)))
     print(Style.RESET_ALL)
 
 
