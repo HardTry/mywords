@@ -13,7 +13,10 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # file -I 'file-name'
 # iconv -f encoding -t encoding < file.old > file.new
 # iconv -f utf-161e -t utf-8 < p.txt > u.txt
-WORDs_FILE = './u.txt'
+# WORDs_FILE = './u.txt'
+
+
+WORDs_FILE = './ABC.txt'
 
 my_dict = {}
 all_words = []
